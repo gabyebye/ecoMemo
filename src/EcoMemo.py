@@ -1,11 +1,15 @@
 import pygame
 import random
 import time
+import json
+import os
+
+from src.LlamaConverser import LlamaConv 
 
 class EcoMemory():
     def __init__(self):
-
         pygame.init()
+
         # Configuration de la fenêtre
         self.screen_width = 800
         self.screen_height = 600
@@ -18,8 +22,21 @@ class EcoMemory():
  
         # Chargement des images des cartes
         self.card_images = []
+
+        # AI to generate the answers
+        # self.llama = LlamaConv()
+
+        # Contains prompts
+        
+        # if os.path.isfile("src/prompts.json"):
+        #     with open("src/prompts.json") as f:
+        #         self.ai_prompts = json.load(f)["ai"]
+        #         self.descriptions = json.load(f)["notai"]
+
+        #         print(self.ai_prompts)
  
         # Variables de jeu
+        self.cards_names = {}
         self.cards = []
         self.flipped_cards = []
         self.matched_cards = []
@@ -41,6 +58,7 @@ class EcoMemory():
             image = pygame.transform.smoothscale(image, (self.card_width, self.card_height))  # Ajustement de la taille des cartes
             self.card_images.append(image)
             self.card_images.append(image)  # Ajout d'une copie pour créer les paires
+            self.cards_names[image] = f'card_{i}'
  
         # Mélange des cartes
         random.shuffle(self.card_images)
@@ -74,6 +92,10 @@ class EcoMemory():
         image_y = popup_y + 20
         self.screen.blit(image, (image_x, image_y))
  
+        # card_name = self.cards_names[image]
+
+        # print(self.ai_prompts[card_name])
+
         # Texte centré
         text_y = image_y + image_height + 20
         lines = [self.lorem_ipsum_text[i:i + 50] for i in range(0, len(self.lorem_ipsum_text), 50)]
