@@ -1,12 +1,26 @@
 {
-    "card_1": "",
-    "card_2": "",
-    "card_3": "",
-    "card_4": "",
-    "card_5": "",
-    "card_6": "",
-    "card_7": "",
-    "card_8": "",
-    "card_9": "",
-    "card_10": ""
+    "ai": {
+        "card_1": "What is the use of a solar panel?",
+        "card_2": "What are the benefits of using a green roof?",
+        "card_3": "What is the purpose of a composter?",
+        "card_4": "What type of objects can we create with bamboo?",
+        "card_5": "What object can be recharged by a portable solar panel?",
+        "card_6": "What dish can be created by a solar cooker?",
+        "card_7": "Give examples of cities that can be powered by a small wind farm.",
+        "card_8": "Give a type of vehicle and its electric range with an example of a journey.",
+        "card_9": "What type of coffee machine can accommodate reusable pods?",
+        "card_10": "What are the advantages of a solar-powered watch compared to a traditional watch?"
+    },
+    "notai": {
+        "card_1": "",
+        "card_2": "",
+        "card_3": "",
+        "card_4": "",
+        "card_5": "",
+        "card_6": "",
+        "card_7": "",
+        "card_8": "",
+        "card_9": "",
+        "card_10": ""
+    }
 }
