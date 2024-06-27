@@ -12,15 +12,15 @@
         "card_10": "What are the advantages of a solar-powered watch compared to a traditional watch?"
     },
     "notai": {
-        "card_1": "",
-        "card_2": "",
-        "card_3": "",
-        "card_4": "",
-        "card_5": "",
-        "card_6": "",
-        "card_7": "",
-        "card_8": "",
-        "card_9": "",
-        "card_10": ""
+        "card_1": "Converts sunlight into electricity for homes and businesses.",
+        "card_2": "Improves insulation, reduces urban heat, and supports biodiversity.",
+        "card_3": "Turns organic waste into nutrient-rich soil for gardening.",
+        "card_4": "Furniture, utensils, flooring, bicycles, and textiles.",
+        "card_5": "Smartphones, tablets, portable speakers, and power banks.",
+        "card_6": "Stews, rice, baked goods, and vegetables.",
+        "card_7": "Small towns like Greensburg, Kansas, and rural communities.",
+        "card_8": "Tesla Model 3, 263 miles; a round trip from Paris to Rouen.",
+        "card_9": "Nespresso machines with compatible reusable pods.",
+        "card_10": "No battery replacements, eco-friendly, and long-lasting power."
     }
 }
