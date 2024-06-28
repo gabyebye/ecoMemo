@@ -47,6 +47,7 @@ class EcoMemory():
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont(None, 24)
         self.lorem_ipsum_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        self.display_loading = False
  
         # Ecran du jeu
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -77,8 +78,18 @@ class EcoMemory():
                 pygame.draw.rect(self.screen, (255, 255, 255), rect)
                 pygame.draw.rect(self.screen, (0, 0, 0), rect, 2)
  
+    def draw_loading_text(self):
+        loading_text = self.font.render("Chargement...", True, (255, 255, 255))
+        text_rect = loading_text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+        
+        # Ajouter un fond noir derrière le texte
+        background_rect = text_rect.inflate(20, 10)
+        pygame.draw.rect(self.screen, (0, 0, 0), background_rect)
+        
+        self.screen.blit(loading_text, text_rect.topleft)
+ 
     def draw_popup(self, image):
-        popup_width, popup_height = 400, 300
+        popup_width, popup_height = 500, 400
         popup_x = (self.screen_width - popup_width) // 2
         popup_y = (self.screen_height - popup_height) // 2
         self.popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
@@ -131,7 +142,6 @@ class EcoMemory():
                                     break
  
             if not self.show_popup and len(self.flipped_cards) == 2:
-                time.sleep(0.5)
                 first_rect = self.flipped_cards[0]
                 second_rect = self.flipped_cards[1]
                 first_image = None
@@ -144,6 +154,12 @@ class EcoMemory():
                 if first_image == second_image:
                     self.matched_cards.append(first_rect)
                     self.matched_cards.append(second_rect)
+                    self.display_loading = True
+                    self.screen.fill((0, 0, 0))
+                    self.draw_loading_text()
+                    pygame.display.flip()
+                    time.sleep(0.5)
+                    self.display_loading = False
                     self.popup_image = first_image
                     self.show_popup = True
                 self.flipped_cards = []
@@ -152,8 +168,15 @@ class EcoMemory():
             self.draw_cards()
             if self.show_popup:
                 self.draw_popup(self.popup_image)
+            elif self.display_loading:
+                self.draw_loading_text()
             pygame.display.flip()
             self.clock.tick(30)
 
         
         pygame.quit()
+
+ecoGame = EcoMemory()
+ecoGame.init_images()
+ecoGame.reveal_cards()
+ecoGame.run_game()
