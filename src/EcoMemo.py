@@ -5,6 +5,7 @@ import json
 import os
 
 from src.LlamaConverser import LlamaConv 
+from src.ArtDude import ArtGen
 
 class EcoMemory():
 
@@ -30,8 +31,15 @@ class EcoMemory():
         # Chargement des images des cartes
         self.card_images = []
 
-        # AI to generate the answers
+        # AIs
         self.llama = LlamaConv()
+        self.genai = ArtGen()
+
+        # assets
+        self.error_sound = pygame.mixer.Sound("./src/assets/error.wav")
+
+        self.error_image = pygame.image.load('./src/assets/error_cross.png')  # Add your error image path here
+        self.error_image = pygame.transform.smoothscale(self.error_image, (self.card_width, self.card_height))
 
         # Contains prompts
         if os.path.isfile("src/prompts.json"):
@@ -41,6 +49,10 @@ class EcoMemory():
         if os.path.isfile("src/descriptions.json"):
             with open("src/descriptions.json") as f:
                 self.descriptions = json.load(f)["notai"]
+        
+        if os.path.isfile("src/objects.json"):
+            with open("src/objects.json") as f:
+                self.objects = json.load(f)["objects"]
  
         # Variables de jeu
         self.cards_names = {}
@@ -139,8 +151,19 @@ class EcoMemory():
             pygame.display.update() 
  
     def init_images(self):
+        
+        self.screen.fill((0, 0, 0))
+        self.draw_loading_text()
+        pygame.display.flip()
+        time.sleep(0.5)
+        
+        file_number = 1
+        for prompt in self.objects:
+            self.genai.generate_image(self.objects[prompt], f'card_{file_number}.png')
+            file_number += 1
+
         for i in range(1, 11):
-            image = pygame.image.load(f'cards/card_{i}.png')  # Assurez-vous d'avoir 10 images nommées card_1.png, card_2.png, etc.
+            image = pygame.image.load(f'src/assets/cards/card_{i}.png')  # Assurez-vous d'avoir 10 images nommées card_1.png, card_2.png, etc.
             image = pygame.transform.smoothscale(image, (self.card_width, self.card_height))  # Ajustement de la taille des cartes
             self.card_images.append(image)
             self.card_images.append(image)  # Ajout d'une copie pour créer les paires
@@ -210,6 +233,19 @@ class EcoMemory():
         pygame.draw.line(self.screen, (255, 255, 255), (self.close_button_rect.left + 5, self.close_button_rect.top + 5), (self.close_button_rect.right - 5, self.close_button_rect.bottom - 5), 2)
         pygame.draw.line(self.screen, (255, 255, 255), (self.close_button_rect.left + 5, self.close_button_rect.bottom - 5), (self.close_button_rect.right - 5, self.close_button_rect.top + 5), 2)
  
+    def failed_pairs(self):
+        self.error_sound.play()
+
+        # Define the position to display the error image (centered)
+        error_image_rect = self.error_image.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+
+        # Draw the error image on the screen
+        self.screen.blit(self.error_image, error_image_rect.topleft)
+        pygame.display.flip()
+
+        # Pause to let the user see the error image
+        time.sleep(0.5)
+
     def run_game(self):
         self.counter = 0
         self.streak = 1
@@ -256,7 +292,7 @@ class EcoMemory():
                     print(self.counter)
                 else:
                     self.streak = 1
-
+                    self.failed_pairs()
 
                 self.flipped_cards = []
  
