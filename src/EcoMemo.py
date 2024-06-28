@@ -5,6 +5,7 @@ import json
 import os
 
 from src.LlamaConverser import LlamaConv 
+from src.ArtDude import ArtGen
 
 class EcoMemory():
 
@@ -30,8 +31,9 @@ class EcoMemory():
         # Chargement des images des cartes
         self.card_images = []
 
-        # AI to generate the answers
+        # AIs
         self.llama = LlamaConv()
+        self.genai = ArtGen()
 
         # assets
         self.error_sound = pygame.mixer.Sound("./src/assets/error.wav")
@@ -47,6 +49,10 @@ class EcoMemory():
         if os.path.isfile("src/descriptions.json"):
             with open("src/descriptions.json") as f:
                 self.descriptions = json.load(f)["notai"]
+        
+        if os.path.isfile("src/objects.json"):
+            with open("src/objects.json") as f:
+                self.objects = json.load(f)["objects"]
  
         # Variables de jeu
         self.cards_names = {}
@@ -143,6 +149,12 @@ class EcoMemory():
             pygame.display.update() 
  
     def init_images(self):
+        self.draw_loading_text()
+        file_number = 1
+        for prompt in self.objects:
+            self.genai.generate_image(self.objects[prompt], f'card_{file_number}.png')
+            file_number += 1
+
         for i in range(1, 11):
             image = pygame.image.load(f'src/assets/cards/card_{i}.png')  # Assurez-vous d'avoir 10 images nommées card_1.png, card_2.png, etc.
             image = pygame.transform.smoothscale(image, (self.card_width, self.card_height))  # Ajustement de la taille des cartes
