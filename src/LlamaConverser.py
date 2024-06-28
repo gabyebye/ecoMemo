@@ -9,7 +9,7 @@ class LlamaConv():
         # Build the API request
         api_request_json = {
             "messages": [
-                {"role": "system", "content": "Your answer must be lesss 250 caracters."},
+                {"role": "system", "content": "Your answer must be lesss 200 caracters."},
                 {"role": "user", "content": message},
             ]
         }
