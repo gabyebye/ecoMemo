@@ -158,10 +158,10 @@ class EcoMemory():
         pygame.display.flip()
         time.sleep(0.5)
         
-        file_number = 1
-        for prompt in self.objects:
-            self.genai.generate_image(self.objects[prompt], f'card_{file_number}.png')
-            file_number += 1
+        # file_number = 1
+        # for prompt in self.objects:
+        #     self.genai.generate_image(self.objects[prompt], f'card_{file_number}.png')
+        #     file_number += 1
 
         for i in range(1, 11):
             image = pygame.image.load(f'src/assets/cards/card_{i}.png')  # Assurez-vous d'avoir 10 images nommées card_1.png, card_2.png, etc.
