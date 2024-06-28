@@ -149,7 +149,12 @@ class EcoMemory():
             pygame.display.update() 
  
     def init_images(self):
+        
+        self.screen.fill((0, 0, 0))
         self.draw_loading_text()
+        pygame.display.flip()
+        time.sleep(0.5)
+        
         file_number = 1
         for prompt in self.objects:
             self.genai.generate_image(self.objects[prompt], f'card_{file_number}.png')
