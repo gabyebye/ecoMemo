@@ -132,6 +132,8 @@ class EcoMemory():
             screen.blit(textQuit , (width/2.4,height/1.95))
             screen.blit(textLaunchGame , (width/2.3,height/2.4))
             screen.blit(menuTitle , (width/2.6,height/10))
+
+            
             
             # updates the frames of the game  
             pygame.display.update() 
@@ -209,6 +211,10 @@ class EcoMemory():
         pygame.draw.line(self.screen, (255, 255, 255), (self.close_button_rect.left + 5, self.close_button_rect.bottom - 5), (self.close_button_rect.right - 5, self.close_button_rect.top + 5), 2)
  
     def run_game(self):
+        self.counter = 0
+        self.streak = 1
+        self.timestart = time.time()
+
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -245,6 +251,13 @@ class EcoMemory():
                     self.display_loading = False
                     self.popup_image = first_image
                     self.show_popup = True
+                    self.counter = (10 + (time.time()-self.timestart))*self.streak
+                    self.streak += 1
+                    print(self.counter)
+                else:
+                    self.streak = 1
+
+
                 self.flipped_cards = []
  
             self.screen.fill((0, 0, 0))
