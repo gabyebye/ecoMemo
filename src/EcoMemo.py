@@ -156,7 +156,7 @@ class EcoMemory():
         self.draw_loading_text()
         pygame.display.flip()
         time.sleep(0.5)
-        
+
         file_number = 1
         for prompt in self.objects:
             self.genai.generate_image(self.objects[prompt], f'card_{file_number}.png')
@@ -187,14 +187,15 @@ class EcoMemory():
                 pygame.draw.rect(self.screen, (0, 0, 0), rect, 2)
  
     def draw_loading_text(self):
-        loading_text = self.font.render("Chargement...", True, (255, 255, 255))
-        text_rect = loading_text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+        smallfont = pygame.font.SysFont('Roboto',35) 
+        textLoading = smallfont.render('Chargement...' , True , (255, 255, 255))
+        text_rect = textLoading.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
         
         # Ajouter un fond noir derrière le texte
         background_rect = text_rect.inflate(20, 10)
         pygame.draw.rect(self.screen, (0, 0, 0), background_rect)
         
-        self.screen.blit(loading_text, text_rect.topleft)
+        self.screen.blit(textLoading, text_rect.topleft)
  
     def draw_popup(self, image):
         popup_width, popup_height = 500, 400
@@ -246,10 +247,25 @@ class EcoMemory():
         # Pause to let the user see the error image
         time.sleep(0.5)
 
+    def ending_menu(self):
+        self.screen.fill((0, 0, 0))
+
+        loading_text = self.font.render("Bien joué!!!", True, (255, 255, 255))
+
+        str_counter = str(self.counter)
+        score_text = self.font.render("Votre score est de " + str_counter, True, (255, 255, 255))
+
+        score_text_rect = score_text.get_rect(center=(self.screen_width // 2, self.screen_height // 2.5))
+        text_rect = loading_text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+        
+        self.screen.blit(loading_text, text_rect.topleft)
+        self.screen.blit(score_text, score_text_rect.topleft)
+
     def run_game(self):
         self.counter = 0
         self.streak = 1
         self.timestart = time.time()
+        self.display_ending = False
 
         while self.running:
             for event in pygame.event.get():
@@ -287,9 +303,11 @@ class EcoMemory():
                     self.display_loading = False
                     self.popup_image = first_image
                     self.show_popup = True
-                    self.counter = (10 + (time.time()-self.timestart))*self.streak
+                    self.counter = int((10 + self.counter +(time.time()-self.timestart))*self.streak)
                     self.streak += 1
-                    print(self.counter)
+                    if len(self.matched_cards) == 20:
+                        self.display_ending = True
+                        
                 else:
                     self.streak = 1
                     self.failed_pairs()
@@ -302,8 +320,7 @@ class EcoMemory():
                 self.draw_popup(self.popup_image)
             elif self.display_loading:
                 self.draw_loading_text()
+            elif self.display_ending:
+                self.ending_menu()
             pygame.display.flip()
             self.clock.tick(30)
-
-        
-        pygame.quit()
