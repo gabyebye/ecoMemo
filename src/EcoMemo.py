@@ -37,6 +37,7 @@ class EcoMemory():
 
         # assets
         self.error_sound = pygame.mixer.Sound("./src/assets/error.wav")
+        self.win_sound = pygame.mixer.Sound("./src/assets/won.wav")
 
         self.error_image = pygame.image.load('./src/assets/error_cross.png')  # Add your error image path here
         self.error_image = pygame.transform.smoothscale(self.error_image, (self.card_width, self.card_height))
@@ -300,6 +301,7 @@ class EcoMemory():
                     self.draw_loading_text()
                     pygame.display.flip()
                     time.sleep(0.5)
+                    self.win_sound.play()
                     self.display_loading = False
                     self.popup_image = first_image
                     self.show_popup = True
