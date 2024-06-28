@@ -4,7 +4,7 @@ import requests
 
 class ArtGen():
     def __init__(self):
-        self.API_URL = "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4"
+        self.API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
         self.headers = {"Authorization": "Bearer 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"}
 
     def query_gen_art_ai(self, payload):
@@ -17,7 +17,7 @@ class ArtGen():
 
     def generate_image(self, gen_prompt, filename):
 
-        image_bytes = self.query_gen_art_ai({"inputs": gen_prompt})
+        image_bytes = self.query_gen_art_ai({"inputs": gen_prompt, "options": {"use_cache": False}})
 
         if image_bytes:
             # You can access the image with PIL.Image for example
